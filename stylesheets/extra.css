@@ -1,0 +1,519 @@
+/* ==========================================================================
+   extra.css — оформление сайта на MkDocs Material
+   Светлая/тёмная темы, типографика, код, навигация, скроллбар.
+   Контент страниц (.md) не затрагивается.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Токены тем
+   -------------------------------------------------------------------------- */
+
+[data-md-color-scheme="default"] {
+  /* Акценты */
+  --md-primary-fg-color: #6d28d9;
+  --md-primary-fg-color--light: #7c3aed;
+  --md-primary-fg-color--dark: #5b21b6;
+  --md-accent-fg-color: #0d9488;
+  --md-accent-fg-color--transparent: rgba(13, 148, 136, .1);
+
+  /* Текст и фон */
+  --md-default-bg-color: #f8f7fc;
+  --md-default-fg-color: #0f172a;
+  --md-typeset-color: #1f2937;
+  --md-typeset-a-color: #0f766e;
+
+  /* Код */
+  --md-code-bg-color: #ffffff;
+  --md-code-fg-color: #1f2937;
+
+  /* Поверхности */
+  --surface: #ffffff;
+  --surface-border: #e8e5f2;
+  --surface-hover: #f3f0fa;
+
+  /* Навигация */
+  --nav-hover: rgba(109, 40, 217, .07);
+  --nav-active: rgba(13, 148, 136, .1);
+
+  /* Тени */
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, .05);
+  --shadow-md: 0 1px 2px rgba(15, 23, 42, .05), 0 10px 24px -12px rgba(15, 23, 42, .18);
+  --shadow-lg: 0 2px 4px rgba(15, 23, 42, .06), 0 18px 40px -18px rgba(15, 23, 42, .3);
+
+  /* Мелочи */
+  --code-hover-border: rgba(109, 40, 217, .35);
+  --scrollbar-thumb: rgba(100, 116, 139, .4);
+  --scrollbar-thumb-hover: rgba(71, 85, 105, .65);
+  --selection-bg: rgba(13, 148, 136, .22);
+  --header-gradient: linear-gradient(100deg, #5b21b6 0%, #6d28d9 55%, #7c3aed 100%);
+
+  /* Футер */
+  --md-footer-bg-color: #2e1065;
+  --md-footer-bg-color--dark: #1e0a45;
+}
+
+/* Тёмные токены применяются и до инициализации палитры (html без атрибута),
+   чтобы при загрузке не было вспышки светлой темы. */
+[data-md-color-scheme="slate"],
+html:not([data-md-color-scheme]) {
+  --md-hue: 262;
+
+  /* Акценты */
+  --md-primary-fg-color: #5b21b6;
+  --md-primary-fg-color--light: #6d28d9;
+  --md-primary-fg-color--dark: #4c1d95;
+  --md-accent-fg-color: #2dd4bf;
+  --md-accent-fg-color--transparent: rgba(45, 212, 191, .12);
+
+  /* Текст и фон: тёмный с лёгким фиолетовым подтоном */
+  --md-default-bg-color: #14121c;
+  --md-default-fg-color: #e2e8f0;
+  --md-typeset-color: #cbd5e1;
+  --md-typeset-a-color: #5eead4;
+
+  /* Код */
+  --md-code-bg-color: #1a1826;
+  --md-code-fg-color: #e2e8f0;
+
+  /* Поверхности */
+  --surface: #1c1a28;
+  --surface-border: rgba(148, 163, 184, .14);
+  --surface-hover: #242130;
+
+  /* Навигация */
+  --nav-hover: rgba(148, 163, 184, .1);
+  --nav-active: rgba(45, 212, 191, .12);
+
+  /* Тени */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, .3);
+  --shadow-md: 0 1px 2px rgba(0, 0, 0, .3), 0 12px 28px -14px rgba(0, 0, 0, .7);
+  --shadow-lg: 0 2px 6px rgba(0, 0, 0, .35), 0 22px 44px -20px rgba(0, 0, 0, .8);
+
+  /* Мелочи */
+  --code-hover-border: rgba(45, 212, 191, .35);
+  --scrollbar-thumb: rgba(148, 163, 184, .28);
+  --scrollbar-thumb-hover: rgba(148, 163, 184, .5);
+  --selection-bg: rgba(45, 212, 191, .25);
+  --header-gradient: linear-gradient(100deg, #4c1d95 0%, #5b21b6 55%, #6d28d9 100%);
+
+  /* Футер */
+  --md-footer-bg-color: #12111a;
+  --md-footer-bg-color--dark: #0d0c14;
+}
+
+/* --------------------------------------------------------------------------
+   2. База
+   -------------------------------------------------------------------------- */
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) transparent;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background-color: var(--selection-bg);
+}
+
+:focus-visible {
+  outline: 2px solid var(--md-accent-fg-color);
+  outline-offset: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   3. Типографика
+   -------------------------------------------------------------------------- */
+
+.md-typeset {
+  line-height: 1.75;
+  letter-spacing: .003em;
+}
+
+.md-typeset h1 {
+  font-weight: 700;
+  letter-spacing: -.025em;
+}
+
+.md-typeset h2 {
+  position: relative;
+  margin-top: 2em;
+  padding-bottom: .4em;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  border-bottom: 1px solid var(--surface-border);
+}
+
+/* Аккуратная градиентная черта под H2 */
+.md-typeset h2::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 3rem;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--md-primary-fg-color), var(--md-accent-fg-color));
+}
+
+.md-typeset h3 {
+  margin-top: 1.8em;
+  font-weight: 600;
+  letter-spacing: -.01em;
+}
+
+.md-typeset ul li {
+  margin-bottom: .35em;
+}
+
+.md-typeset ul li::marker {
+  color: var(--md-accent-fg-color);
+}
+
+.md-typeset a {
+  text-decoration: none;
+  transition: color .18s ease;
+}
+
+.md-typeset a:hover {
+  color: var(--md-accent-fg-color);
+  text-decoration: underline;
+  text-underline-offset: .2em;
+  text-decoration-thickness: .05rem;
+}
+
+.md-typeset .headerlink:hover {
+  color: var(--md-accent-fg-color);
+}
+
+/* Разделители в контенте — мягкая линия с растворением по краям */
+.md-typeset hr {
+  height: 1px;
+  margin: 2.5em 0;
+  border: 0;
+  background: linear-gradient(90deg,
+      transparent,
+      var(--surface-border) 20%,
+      var(--surface-border) 80%,
+      transparent);
+}
+
+.md-typeset blockquote {
+  margin-left: 0;
+  padding: .85rem 1.1rem;
+  color: var(--md-typeset-color);
+  background-color: var(--surface);
+  border-left: .2rem solid var(--md-accent-fg-color);
+  border-radius: 0 .6rem .6rem 0;
+  box-shadow: var(--shadow-sm);
+}
+
+.md-typeset img {
+  border-radius: .6rem;
+}
+
+/* Таблицы */
+.md-typeset table:not([class]) {
+  overflow: hidden;
+  border: 1px solid var(--surface-border);
+  border-radius: .6rem;
+  border-collapse: separate;
+  border-spacing: 0;
+  box-shadow: var(--shadow-sm);
+}
+
+.md-typeset table:not([class]) th {
+  font-weight: 600;
+  background-color: var(--surface-hover);
+}
+
+.md-typeset table:not([class]) tr:hover {
+  background-color: var(--surface-hover);
+}
+
+/* --------------------------------------------------------------------------
+   4. Блоки кода
+   -------------------------------------------------------------------------- */
+
+.md-typeset .highlight {
+  margin: 1.25em 0;
+  overflow: hidden;
+  background-color: var(--md-code-bg-color);
+  border: 1px solid var(--surface-border);
+  border-radius: .85rem;
+  box-shadow: var(--shadow-sm);
+  transition: border-color .25s ease, box-shadow .25s ease;
+}
+
+.md-typeset .highlight:hover {
+  border-color: var(--code-hover-border);
+  box-shadow: var(--shadow-md);
+}
+
+.md-typeset .highlight>pre {
+  margin: 0;
+}
+
+.md-typeset pre>code {
+  padding: 1.05rem 1.15rem;
+  font-size: .74rem;
+  line-height: 1.7;
+  tab-size: 4;
+  border-radius: .85rem;
+}
+
+/* Инлайн-код */
+.md-typeset :not(pre)>code {
+  padding: .12em .4em;
+  font-size: .84em;
+  background-color: var(--md-code-bg-color);
+  border: 1px solid var(--surface-border);
+  border-radius: .4rem;
+}
+
+/* Кнопка «копировать» */
+.md-typeset .md-clipboard {
+  border-radius: .45rem;
+  transition: background-color .2s ease, color .2s ease;
+}
+
+.md-typeset .md-clipboard:hover {
+  color: var(--md-accent-fg-color);
+  background-color: var(--surface-hover);
+}
+
+/* --------------------------------------------------------------------------
+   5. Плашки (admonitions / details) и карточки
+   -------------------------------------------------------------------------- */
+
+.md-typeset .admonition,
+.md-typeset details {
+  overflow: hidden;
+  font-size: .74rem;
+  background-color: var(--surface);
+  border-left-width: .25rem;
+  border-radius: .8rem;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow .25s ease;
+}
+
+.md-typeset .admonition:hover,
+.md-typeset details:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.md-typeset .admonition-title,
+.md-typeset summary {
+  font-weight: 600;
+  letter-spacing: .01em;
+}
+
+/* Карточки (если появятся в контенте) */
+.md-typeset .grid.cards>ul>li,
+.md-typeset .grid>.card {
+  padding: 1rem 1.1rem;
+  background-color: var(--surface);
+  border: 1px solid var(--surface-border);
+  border-radius: .85rem;
+  box-shadow: var(--shadow-sm);
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+
+.md-typeset .grid.cards>ul>li:hover,
+.md-typeset .grid>.card:hover {
+  transform: translateY(-3px);
+  border-color: var(--code-hover-border);
+  box-shadow: var(--shadow-lg);
+}
+
+/* --------------------------------------------------------------------------
+   6. Кнопки
+   -------------------------------------------------------------------------- */
+
+.md-typeset .md-button {
+  padding: .55rem 1.15rem;
+  font-weight: 600;
+  border-radius: .6rem;
+  transition: transform .18s ease, box-shadow .18s ease,
+    background-color .18s ease, border-color .18s ease;
+}
+
+.md-typeset .md-button:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.md-typeset .md-button--primary {
+  box-shadow: 0 6px 18px -8px rgba(79, 70, 229, .6);
+}
+
+/* Кастомный класс .md-button--warning, который уже используется в index.md */
+.md-typeset .md-button--warning {
+  color: #1f2937;
+  background-color: #f59e0b;
+  border-color: #f59e0b;
+  box-shadow: 0 6px 18px -8px rgba(245, 158, 11, .65);
+}
+
+.md-typeset .md-button--warning:hover {
+  color: #1f2937;
+  background-color: #fbbf24;
+  border-color: #fbbf24;
+}
+
+/* --------------------------------------------------------------------------
+   7. Шапка, табы, поиск
+   -------------------------------------------------------------------------- */
+
+.md-header {
+  box-shadow: var(--shadow-sm);
+}
+
+/* Светлая тема: фиолетовый градиент */
+[data-md-color-scheme="default"] .md-header,
+[data-md-color-scheme="default"] .md-tabs {
+  background-image: var(--header-gradient);
+}
+
+/* Тёмная тема: глубокий фиолетовый градиент с лёгким blur */
+[data-md-color-scheme="slate"] .md-header,
+[data-md-color-scheme="slate"] .md-tabs {
+  background-image: linear-gradient(100deg,
+      rgba(76, 29, 149, .92) 0%,
+      rgba(91, 33, 182, .92) 55%,
+      rgba(109, 40, 217, .92) 100%);
+  border-bottom: 1px solid rgba(167, 139, 250, .22);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  backdrop-filter: blur(12px) saturate(140%);
+}
+
+.md-header__title {
+  font-weight: 700;
+  letter-spacing: -.01em;
+}
+
+.md-header__button.md-logo svg {
+  transition: transform .25s ease;
+}
+
+.md-header__button.md-logo:hover svg {
+  transform: rotate(-8deg) scale(1.08);
+}
+
+.md-tabs__link {
+  opacity: .85;
+  transition: opacity .2s ease;
+}
+
+.md-tabs__link:hover {
+  opacity: 1;
+}
+
+.md-search__form,
+.md-search__input {
+  border-radius: .6rem;
+}
+
+.md-search__output {
+  border-radius: .7rem;
+  box-shadow: var(--shadow-lg);
+}
+
+/* --------------------------------------------------------------------------
+   8. Навигация
+   -------------------------------------------------------------------------- */
+
+.md-nav__title {
+  font-weight: 700;
+  letter-spacing: -.01em;
+}
+
+.md-nav__link {
+  padding: .25rem .5rem;
+  border-radius: .45rem;
+  transition: background-color .18s ease, color .18s ease;
+}
+
+.md-nav__link:hover {
+  color: var(--md-accent-fg-color);
+  background-color: var(--nav-hover);
+}
+
+.md-nav__link--active {
+  font-weight: 600;
+  color: var(--md-accent-fg-color);
+  background-color: var(--nav-active);
+}
+
+/* Кнопка «наверх» */
+.md-top {
+  padding: .45rem .9rem;
+  font-weight: 600;
+  border-radius: 999px;
+  box-shadow: var(--shadow-md);
+}
+
+/* --------------------------------------------------------------------------
+   9. Футер
+   -------------------------------------------------------------------------- */
+
+.md-footer {
+  border-top: 1px solid rgba(255, 255, 255, .06);
+}
+
+.md-footer-meta {
+  background-color: rgba(0, 0, 0, .25);
+}
+
+.md-social__link {
+  transition: transform .2s ease, opacity .2s ease;
+}
+
+.md-social__link:hover {
+  transform: translateY(-2px);
+  opacity: 1;
+}
+
+/* --------------------------------------------------------------------------
+   10. Скроллбар
+   -------------------------------------------------------------------------- */
+
+::-webkit-scrollbar {
+  width: .6rem;
+  height: .6rem;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb);
+  background-clip: content-box;
+  border: 2px solid transparent;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scrollbar-thumb-hover);
+  background-clip: content-box;
+}
+
+/* --------------------------------------------------------------------------
+   11. Доступность: отключаем анимации при prefers-reduced-motion
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
